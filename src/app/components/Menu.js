@@ -1,5 +1,5 @@
 import React from "react";
-import "../draw.css";
+import "../doodle.css";
 
 const Menu = ({ clearDrawing, setLineColor, setLineWidth, setLineOpacity }) => {
   return (

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Menu from "./components/Menu";
 import Image from "next/image";
-import "./draw.css";
+import "./doodle.css";
 
 function Draw() {
   const canvasRef = useRef(null);
