@@ -1,3 +1,9 @@
+## Doodle
+
+Doodle is a drawing app similar to MS Paint.
+
+<img src="public/doodle.png" alt="doodle" width="400"/>
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
