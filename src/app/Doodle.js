@@ -62,7 +62,7 @@ function Draw() {
       <div className="flex">
         <Image
           className="dark:invert"
-          src="/brush.svg"
+          src="/doodle/brush.svg"
           alt="Brush"
           width={48}
           height={48}
