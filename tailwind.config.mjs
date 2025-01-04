@@ -12,6 +12,9 @@ export default {
         foreground: "var(--foreground)",
       },
     },
+    fontFamily: {
+      mono: ["Courier New", "Monaco", "sans-serif"],
+    },
   },
   plugins: [],
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import Menu from "./components/Menu";
 import Image from "next/image";
 import "./doodle.css";
@@ -10,20 +10,30 @@ function Draw() {
   const ctxRef = useRef(null);
 
   const [isDrawing, setIsDrawing] = useState(false);
-  const [lineWidth, setLineWidth] = useState(5);
-  const [lineColor, setLineColor] = useState("black");
-  const [lineOpacity, setLineOpacity] = useState(0.1);
+  const [lineWidth, setLineWidth] = useState(7);
+  const [lineColor, setLineColor] = useState("#00000");
+  const [lineOpacity, setLineOpacity] = useState(0.5);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+  const defineLine = useCallback(() => {
+    const ctx = canvasRef.current.getContext("2d");
+
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.globalAlpha = lineOpacity;
     ctx.strokeStyle = lineColor;
     ctx.lineWidth = lineWidth;
+
     ctxRef.current = ctx;
   }, [lineColor, lineOpacity, lineWidth]);
+
+  const sizeCanvas = () => {
+    const drawAreaElement = document.querySelector(".draw-area");
+
+    canvasRef.current.style.width = drawAreaElement.width;
+    canvasRef.current.style.height = drawAreaElement.height;
+    canvasRef.current.width = drawAreaElement.offsetWidth;
+    canvasRef.current.height = drawAreaElement.offsetHeight;
+  };
 
   const startDrawing = (e) => {
     ctxRef.current.beginPath();
@@ -57,8 +67,16 @@ function Draw() {
     );
   };
 
+  useEffect(() => {
+    sizeCanvas();
+  }, []);
+
+  useEffect(() => {
+    defineLine();
+  }, [lineColor, lineOpacity, lineWidth]);
+
   return (
-    <div className="doodle-app flex flex-col justify-start items-center bg-gray-100">
+    <div className="doodle-app w-full h-screen flex flex-col justify-start items-center bg-gray-100 font-mono">
       <div className="flex">
         <Image
           className="dark:invert"
@@ -67,26 +85,25 @@ function Draw() {
           width={48}
           height={48}
         />
-        <h1 className="ml-2 font-sans font-medium text-5xl text-black py-4">
-          Doodle
-        </h1>
+        <h1 className="ml-2 font-medium text-5xl text-black py-4">Doodle</h1>
       </div>
 
-      <div className="draw-area bg-white border-gray-200 border-2 relative">
-        <Menu
-          setLineColor={setLineColor}
-          setLineWidth={setLineWidth}
-          setLineOpacity={setLineOpacity}
-          clearDrawing={clearDrawing}
-        />
+      <Menu
+        lineColor={lineColor}
+        setLineColor={setLineColor}
+        lineWidth={lineWidth}
+        setLineWidth={setLineWidth}
+        lineOpacity={lineOpacity}
+        setLineOpacity={setLineOpacity}
+        clearDrawing={clearDrawing}
+      />
 
+      <div className="draw-area bg-white border-gray-200 border-2 relative cursor-cell">
         <canvas
           onMouseDown={startDrawing}
           onMouseUp={endDrawing}
           onMouseMove={draw}
           ref={canvasRef}
-          width={`1280px`}
-          height={`720px`}
         />
       </div>
     </div>

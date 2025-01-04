@@ -1,7 +1,15 @@
 import React from "react";
 import "../doodle.css";
 
-const Menu = ({ clearDrawing, setLineColor, setLineWidth, setLineOpacity }) => {
+const Menu = ({
+  clearDrawing,
+  lineColor,
+  lineOpacity,
+  lineWidth,
+  setLineColor,
+  setLineOpacity,
+  setLineWidth,
+}) => {
   return (
     <div className="menu flex border-4 justify-evenly rounded my-4 items-center mx-auto text-zinc-900 font-light">
       <div className="flex">
@@ -12,6 +20,7 @@ const Menu = ({ clearDrawing, setLineColor, setLineWidth, setLineOpacity }) => {
           onChange={(e) => {
             setLineColor(e.target.value);
           }}
+          value={lineColor}
         />
       </div>
 
@@ -21,10 +30,11 @@ const Menu = ({ clearDrawing, setLineColor, setLineWidth, setLineOpacity }) => {
           className="ml-2"
           type="range"
           min="3"
-          max="20"
+          max="15"
           onChange={(e) => {
             setLineWidth(e.target.value);
           }}
+          value={lineWidth}
         />
       </div>
 
@@ -38,6 +48,7 @@ const Menu = ({ clearDrawing, setLineColor, setLineWidth, setLineOpacity }) => {
           onChange={(e) => {
             setLineOpacity(e.target.value / 100);
           }}
+          value={lineOpacity * 100}
         />
       </div>
 
