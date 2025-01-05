@@ -4,8 +4,9 @@
 }
 
 .menu {
-  width: 800px;
-  height: 50px;
+  max-width: 1000px;
+  width: 80%;
+  flex-flow: row wrap;
 }
 
 button {

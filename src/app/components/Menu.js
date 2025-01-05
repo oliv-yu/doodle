@@ -11,8 +11,8 @@ const Menu = ({
   setLineWidth,
 }) => {
   return (
-    <div className="menu flex border-4 justify-evenly rounded my-4 items-center mx-auto text-zinc-900 font-light">
-      <div className="flex">
+    <div className="menu flex border-4 justify-evenly rounded my-4 items-center mx-auto text-zinc-900 font-light text-xs">
+      <div className="p-1">
         <label>Brush Color</label>
         <input
           className="ml-2"
@@ -24,7 +24,7 @@ const Menu = ({
         />
       </div>
 
-      <div className="flex">
+      <div className="p-1">
         <label>Brush Width</label>
         <input
           className="ml-2"
@@ -38,7 +38,7 @@ const Menu = ({
         />
       </div>
 
-      <div className="flex">
+      <div className="p-1">
         <label>Brush Opacity</label>
         <input
           className="ml-2"
@@ -52,7 +52,7 @@ const Menu = ({
         />
       </div>
 
-      <div>
+      <div className="flex p-1 justify-center items-center">
         <button
           aria-label="Clear Drawing"
           className="py-1 px-3"
