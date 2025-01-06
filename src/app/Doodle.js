@@ -13,6 +13,7 @@ function Draw() {
   const [lineWidth, setLineWidth] = useState(7);
   const [lineColor, setLineColor] = useState("#00000");
   const [lineOpacity, setLineOpacity] = useState(0.5);
+  const [ongoingTouches, setOngoingTouches] = useState([]);
 
   const defineLine = useCallback(() => {
     const ctx = canvasRef.current.getContext("2d");
@@ -45,6 +46,42 @@ function Draw() {
     setIsDrawing(true);
   };
 
+  const copyTouch = ({ identifier, pageX, pageY }) => {
+    return { identifier, pageX, pageY };
+  };
+
+  const offsetXAndY = (pageX, pageY) => {
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+
+    return [pageX - rect.left, pageY - rect.top];
+  };
+
+  const ongoingTouchIndexById = (idToFind) => {
+    for (let i = 0; i < ongoingTouches.length; i++) {
+      const id = ongoingTouches[i].identifier;
+
+      if (id === idToFind) {
+        return i;
+      }
+    }
+    return -1; // not found
+  };
+
+  const startTouchDrawing = (evt) => {
+    evt.preventDefault();
+
+    console.log("touchstart.");
+    const touches = evt.changedTouches;
+
+    for (let i = 0; i < touches.length; i++) {
+      console.log(`touchstart: ${i}.`);
+      setOngoingTouches([...ongoingTouches, copyTouch(touches[i])]);
+      ctxRef.current.beginPath();
+      ctxRef.current.fill();
+    }
+  };
+
   const endDrawing = () => {
     ctxRef.current.closePath();
     setIsDrawing(false);
@@ -52,9 +89,72 @@ function Draw() {
 
   const draw = (e) => {
     if (isDrawing) {
+      console.log(e);
       ctxRef.current.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
 
       ctxRef.current.stroke();
+    }
+  };
+
+  const drawTouch = (evt) => {
+    evt.preventDefault();
+
+    const touches = evt.changedTouches;
+
+    for (let i = 0; i < touches.length; i++) {
+      const idx = ongoingTouchIndexById(touches[i].identifier);
+
+      if (idx >= 0) {
+        console.log(`continuing touch ${idx}`);
+        ctxRef.current.beginPath();
+        console.log(
+          `ctx.moveTo( ${offsetXAndY(
+            ongoingTouches[idx].pageX,
+            ongoingTouches[idx].pageY
+          )} );`
+        );
+        ctxRef.current.moveTo(
+          ...offsetXAndY(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY)
+        );
+        console.log(
+          `ctx.lineTo( ${offsetXAndY(touches[i].pageX, touches[i].pageY)} );`
+        );
+        ctxRef.current.lineTo(
+          ...offsetXAndY(touches[i].pageX, touches[i].pageY)
+        );
+        ctxRef.current.stroke();
+
+        setOngoingTouches(
+          ongoingTouches.toSpliced(idx, 1, copyTouch(touches[i]))
+        ); // swap in the new touch record
+      } else {
+        console.log("can't figure out which touch to continue");
+      }
+    }
+  };
+
+  const endTouchDrawing = (evt) => {
+    evt.preventDefault();
+
+    console.log("touchend");
+    const touches = evt.changedTouches;
+
+    for (let i = 0; i < touches.length; i++) {
+      let idx = ongoingTouchIndexById(touches[i].identifier);
+
+      if (idx >= 0) {
+        ctxRef.current.beginPath();
+        ctxRef.current.moveTo(
+          ...offsetXAndY(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY)
+        );
+        ctxRef.current.lineTo(
+          ...offsetXAndY(touches[i].pageX, touches[i].pageY)
+        );
+
+        setOngoingTouches(ongoingTouches.filter((_, i) => i !== idx));
+      } else {
+        console.log("can't figure out which touch to end");
+      }
     }
   };
 
@@ -103,6 +203,9 @@ function Draw() {
           onMouseDown={startDrawing}
           onMouseUp={endDrawing}
           onMouseMove={draw}
+          onTouchStart={startTouchDrawing}
+          onTouchEnd={endTouchDrawing}
+          onTouchMove={drawTouch}
           ref={canvasRef}
         />
       </div>

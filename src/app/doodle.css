@@ -1,6 +1,11 @@
+.doodle {
+  touch-action: none;
+}
+
 .draw-area {
   width: 90%;
   height: 70%;
+  touch-action: none;
 }
 
 .menu {
