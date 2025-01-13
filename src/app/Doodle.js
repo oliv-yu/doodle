@@ -11,7 +11,7 @@ function Draw() {
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [lineWidth, setLineWidth] = useState(7);
-  const [lineColor, setLineColor] = useState("#00000");
+  const [lineColor, setLineColor] = useState("#000000");
   const [lineOpacity, setLineOpacity] = useState(0.5);
   const [ongoingTouches, setOngoingTouches] = useState([]);
 
@@ -36,14 +36,39 @@ function Draw() {
     canvasRef.current.height = drawAreaElement.offsetHeight;
   };
 
-  const startDrawing = (e) => {
+  const onCanvasEnter = (e) => {
+    if (isDrawing) {
+      ctxRef.current.beginPath();
+      ctxRef.current.stroke();
+    }
+  };
+
+  const onCanvasLeave = (e) => {
+    if (isDrawing) {
+      ctxRef.current.closePath();
+    }
+  };
+
+  const onStartDrawing = (e) => {
     ctxRef.current.beginPath();
     ctxRef.current.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-
     ctxRef.current.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     ctxRef.current.stroke();
 
     setIsDrawing(true);
+  };
+
+  const onDraw = (e) => {
+    if (isDrawing) {
+      ctxRef.current.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+
+      ctxRef.current.stroke();
+    }
+  };
+
+  const onStopDrawing = () => {
+    ctxRef.current.closePath();
+    setIsDrawing(false);
   };
 
   const copyTouch = ({ identifier, pageX, pageY }) => {
@@ -79,20 +104,6 @@ function Draw() {
       setOngoingTouches([...ongoingTouches, copyTouch(touches[i])]);
       ctxRef.current.beginPath();
       ctxRef.current.fill();
-    }
-  };
-
-  const endDrawing = () => {
-    ctxRef.current.closePath();
-    setIsDrawing(false);
-  };
-
-  const draw = (e) => {
-    if (isDrawing) {
-      console.log(e);
-      ctxRef.current.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-
-      ctxRef.current.stroke();
     }
   };
 
@@ -176,7 +187,10 @@ function Draw() {
   }, [lineColor, lineOpacity, lineWidth]);
 
   return (
-    <div className="doodle-app w-full h-screen flex flex-col justify-start items-center bg-gray-100 font-mono">
+    <div
+      className="doodle-app w-full h-screen flex flex-col justify-start items-center bg-gray-100 font-mono"
+      onMouseUp={() => setIsDrawing(false)}
+    >
       <div className="flex">
         <Image
           className="dark:invert"
@@ -184,6 +198,7 @@ function Draw() {
           alt="Brush"
           width={48}
           height={48}
+          style={{ width: "auto", height: "auto" }}
         />
         <h1 className="ml-2 font-medium text-5xl text-black py-4">Doodle</h1>
       </div>
@@ -200,9 +215,11 @@ function Draw() {
 
       <div className="draw-area bg-white border-gray-200 border-2 relative cursor-cell">
         <canvas
-          onMouseDown={startDrawing}
-          onMouseUp={endDrawing}
-          onMouseMove={draw}
+          onMouseDown={onStartDrawing}
+          onMouseUp={onStopDrawing}
+          onMouseLeave={onCanvasLeave}
+          onMouseEnter={onCanvasEnter}
+          onMouseMove={onDraw}
           onTouchStart={startTouchDrawing}
           onTouchEnd={endTouchDrawing}
           onTouchMove={drawTouch}
