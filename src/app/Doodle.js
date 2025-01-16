@@ -177,12 +177,11 @@ function Draw() {
     >
       <div className="flex mt-3">
         <Image
-          className="dark:invert"
+          className="dark:invert brush-icon"
           src="/doodle/brush.svg"
           alt="Brush"
           width={30}
           height={30}
-          style={{ width: "30px", height: "auto" }}
         />
         <h1 className="ml-2 font-medium text-4xl text-black">Doodle</h1>
       </div>

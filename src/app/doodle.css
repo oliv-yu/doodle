@@ -2,6 +2,11 @@
   touch-action: none;
 }
 
+.brush-icon {
+  width: 30px;
+  height: 30px;
+}
+
 .draw-area {
   width: 90%;
   height: 70%;
