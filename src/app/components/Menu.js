@@ -9,6 +9,7 @@ const Menu = ({
   setLineColor,
   setLineOpacity,
   setLineWidth,
+  undo,
 }) => {
   return (
     <div className="menu flex border-4 justify-evenly rounded my-3 items-center mx-auto text-zinc-900 font-light text-xs">
@@ -55,10 +56,14 @@ const Menu = ({
       <div className="flex p-1 justify-center items-center">
         <button
           aria-label="Clear Drawing"
-          className="py-1 px-3"
+          className="py-1 px-3 mr-2"
           onClick={clearDrawing}
         >
           Clear
+        </button>
+
+        <button aria-label="Undo" className="py-1 px-3" onClick={undo}>
+          Undo
         </button>
       </div>
     </div>

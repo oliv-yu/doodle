@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback, useState } from "react";
 import Menu from "./components/Menu";
-import Image from "next/image";
+import NextImage from "next/image";
 import "./doodle.css";
 
 function Draw() {
@@ -13,8 +13,9 @@ function Draw() {
   const [lineWidth, setLineWidth] = useState(7);
   const [lineColor, setLineColor] = useState("#000000");
   const [lineOpacity, setLineOpacity] = useState(0.5);
+  const [history, setHistory] = useState([]);
 
-  const prevPositionRef = useRef([]);
+  const prevPositionRef = useRef({});
 
   const defineLine = useCallback(() => {
     const ctx = canvasRef.current.getContext("2d");
@@ -85,15 +86,38 @@ function Draw() {
 
     ctxRef.current.stroke();
     ctxRef.current.closePath();
+
+    saveHistory();
     setIsDrawing(false);
     prevPositionRef.current = {};
   };
 
-  const offsetXAndY = (pageX, pageY) => {
+  const saveHistory = () => {
+    setHistory([...history, canvasRef.current.toDataURL()]);
+  };
+
+  const undo = () => {
+    if (history.length === 1) {
+      clearDrawing();
+      setHistory([]);
+    } else if (history.length > 1) {
+      const img = new Image();
+      img.src = history[history.length - 2];
+
+      img.onload = function () {
+        clearDrawing();
+        ctxRef.current.drawImage(img, 0, 0);
+      };
+
+      setHistory(history.slice(0, -1));
+    }
+  };
+
+  const offsetXAndY = (touch) => {
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
 
-    return [pageX - rect.left, pageY - rect.top];
+    return [touch.clientX - rect.left, touch.clientY - rect.top];
   };
 
   const startTouchDrawing = (evt) => {
@@ -103,7 +127,7 @@ function Draw() {
       ctxRef.current.beginPath();
       ctxRef.current.fill();
       prevPositionRef.current = {
-        coord: offsetXAndY(touches[i].pageX, touches[i].pageY),
+        coord: offsetXAndY(touches[i]),
         identifier: touches[i].identifier,
       };
     }
@@ -119,13 +143,11 @@ function Draw() {
           prevPositionRef.current?.coord?.[0],
           prevPositionRef.current?.coord?.[1]
         );
-        ctxRef.current.lineTo(
-          ...offsetXAndY(touches[i].pageX, touches[i].pageY)
-        );
+        ctxRef.current.lineTo(...offsetXAndY(touches[i]));
         ctxRef.current.stroke();
 
         prevPositionRef.current = {
-          coord: offsetXAndY(touches[i].pageX, touches[i].pageY),
+          coord: offsetXAndY(touches[i]),
           identifier: touches[i].identifier,
         };
       }
@@ -142,13 +164,12 @@ function Draw() {
           prevPositionRef.current?.coord?.[0],
           prevPositionRef.current?.coord?.[1]
         );
-        ctxRef.current.lineTo(
-          ...offsetXAndY(touches[i].pageX, touches[i].pageY)
-        );
+        ctxRef.current.lineTo(...offsetXAndY(touches[i]));
         ctxRef.current.stroke();
       }
     }
 
+    saveHistory();
     ctxRef.current.closePath();
     prevPositionRef.current = {};
   };
@@ -176,7 +197,7 @@ function Draw() {
       onMouseUp={() => setIsDrawing(false)}
     >
       <div className="flex mt-3">
-        <Image
+        <NextImage
           className="dark:invert brush-icon"
           src="/doodle/brush.svg"
           alt="Brush"
@@ -194,6 +215,7 @@ function Draw() {
         lineOpacity={lineOpacity}
         setLineOpacity={setLineOpacity}
         clearDrawing={clearDrawing}
+        undo={undo}
       />
 
       <div className="draw-area bg-white border-gray-200 border-2 relative cursor-cell">
