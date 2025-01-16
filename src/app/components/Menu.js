@@ -11,7 +11,7 @@ const Menu = ({
   setLineWidth,
 }) => {
   return (
-    <div className="menu flex border-4 justify-evenly rounded my-4 items-center mx-auto text-zinc-900 font-light text-xs">
+    <div className="menu flex border-4 justify-evenly rounded my-3 items-center mx-auto text-zinc-900 font-light text-xs">
       <div className="p-1">
         <label>Brush Color</label>
         <input

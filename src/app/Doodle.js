@@ -114,15 +114,15 @@ function Draw() {
 
     for (let i = 0; i < touches.length; i++) {
       if (touches[i].identifier === prevPositionRef.current?.identifier) {
-      ctxRef.current.beginPath();
-      ctxRef.current.moveTo(
+        ctxRef.current.beginPath();
+        ctxRef.current.moveTo(
           prevPositionRef.current?.coord?.[0],
           prevPositionRef.current?.coord?.[1]
-      );
+        );
         ctxRef.current.lineTo(
           ...offsetXAndY(touches[i].pageX, touches[i].pageY)
         );
-      ctxRef.current.stroke();
+        ctxRef.current.stroke();
 
         prevPositionRef.current = {
           coord: offsetXAndY(touches[i].pageX, touches[i].pageY),
@@ -137,15 +137,15 @@ function Draw() {
 
     for (let i = 0; i < touches.length; i++) {
       if (touches[i].identifier === prevPositionRef.current?.identifier) {
-      ctxRef.current.beginPath();
-      ctxRef.current.moveTo(
+        ctxRef.current.beginPath();
+        ctxRef.current.moveTo(
           prevPositionRef.current?.coord?.[0],
           prevPositionRef.current?.coord?.[1]
-      );
+        );
         ctxRef.current.lineTo(
           ...offsetXAndY(touches[i].pageX, touches[i].pageY)
         );
-      ctxRef.current.stroke();
+        ctxRef.current.stroke();
       }
     }
 
@@ -172,19 +172,19 @@ function Draw() {
 
   return (
     <div
-      className="doodle-app w-full h-screen flex flex-col justify-start items-center bg-gray-100 font-mono"
+      className="doodle-app w-full h-screen flex flex-col justify-start items-center bg-gray-100 font-indie"
       onMouseUp={() => setIsDrawing(false)}
     >
-      <div className="flex">
+      <div className="flex mt-3">
         <Image
           className="dark:invert"
           src="/doodle/brush.svg"
           alt="Brush"
-          width={48}
-          height={48}
-          style={{ width: "auto", height: "auto" }}
+          width={30}
+          height={30}
+          style={{ width: "30px", height: "auto" }}
         />
-        <h1 className="ml-2 font-medium text-5xl text-black py-4">Doodle</h1>
+        <h1 className="ml-2 font-medium text-4xl text-black">Doodle</h1>
       </div>
 
       <Menu

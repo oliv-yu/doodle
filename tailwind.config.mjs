@@ -13,7 +13,7 @@ export default {
       },
     },
     fontFamily: {
-      mono: ["Courier New", "Monaco", "sans-serif"],
+      indie: ["Indie Flower", "Monaco", "sans-serif"],
     },
   },
   plugins: [],
