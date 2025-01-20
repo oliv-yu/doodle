@@ -4,10 +4,8 @@ import "../doodle.css";
 const Menu = ({
   clearDrawing,
   lineColor,
-  lineOpacity,
   lineWidth,
   setLineColor,
-  setLineOpacity,
   setLineWidth,
   undo,
 }) => {
@@ -36,20 +34,6 @@ const Menu = ({
             setLineWidth(e.target.value);
           }}
           value={lineWidth}
-        />
-      </div>
-
-      <div className="p-1">
-        <label>Brush Opacity</label>
-        <input
-          className="ml-2"
-          type="range"
-          min="1"
-          max="100"
-          onChange={(e) => {
-            setLineOpacity(e.target.value / 100);
-          }}
-          value={lineOpacity * 100}
         />
       </div>
 

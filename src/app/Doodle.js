@@ -12,7 +12,6 @@ function Draw() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [lineWidth, setLineWidth] = useState(7);
   const [lineColor, setLineColor] = useState("#000000");
-  const [lineOpacity, setLineOpacity] = useState(0.5);
   const [history, setHistory] = useState([]);
 
   const prevPositionRef = useRef({});
@@ -20,15 +19,13 @@ function Draw() {
   const defineLine = useCallback(() => {
     const ctx = canvasRef.current.getContext("2d");
 
-    // Commenting these out as it creates little dots when drawing
-    // ctx.lineCap = "round";
-    // ctx.lineJoin = "round";
-    ctx.globalAlpha = lineOpacity;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
     ctx.strokeStyle = lineColor;
     ctx.lineWidth = lineWidth;
 
     ctxRef.current = ctx;
-  }, [lineColor, lineOpacity, lineWidth]);
+  }, [lineColor, lineWidth]);
 
   const sizeCanvas = () => {
     const drawAreaElement = document.querySelector(".draw-area");
@@ -189,7 +186,7 @@ function Draw() {
 
   useEffect(() => {
     defineLine();
-  }, [lineColor, lineOpacity, lineWidth]);
+  }, [lineColor, lineWidth]);
 
   return (
     <div
@@ -212,8 +209,6 @@ function Draw() {
         setLineColor={setLineColor}
         lineWidth={lineWidth}
         setLineWidth={setLineWidth}
-        lineOpacity={lineOpacity}
-        setLineOpacity={setLineOpacity}
         clearDrawing={clearDrawing}
         undo={undo}
       />
