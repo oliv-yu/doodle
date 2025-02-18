@@ -1,5 +1,6 @@
-.doodle {
-  touch-action: none;
+html,
+body {
+  height: 100%;
 }
 
 .brush-icon {
@@ -8,14 +9,13 @@
 }
 
 .draw-area {
-  width: 90%;
-  height: 70%;
+  width: 100%;
+  height: 100%;
   touch-action: none;
 }
 
 .menu {
   max-width: 600px;
-  width: 80%;
   flex-flow: row wrap;
 }
 

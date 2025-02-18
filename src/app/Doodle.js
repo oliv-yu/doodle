@@ -202,29 +202,31 @@ function Draw() {
 
   return (
     <div
-      className="doodle-app w-full h-screen flex flex-col justify-start items-center bg-gray-100 font-indie"
+      className="doodle-app w-full h-full flex flex-col justify-start items-center bg-gray-100 font-indie"
       onMouseUp={() => setIsDrawing(false)}
     >
-      <div className="flex mt-3">
-        <NextImage
-          className="dark:invert brush-icon"
-          src="/doodle/brush.svg"
-          alt="Brush"
-          width={30}
-          height={30}
-        />
-        <h1 className="ml-2 font-medium text-4xl text-black">Doodle</h1>
-      </div>
+      <div className="header p-2">
+        <span className="flex justify-center">
+          <NextImage
+            className="dark:invert brush-icon"
+            src="/doodle/brush.svg"
+            alt="Brush"
+            width={30}
+            height={30}
+          />
+          <h1 className="ml-2 font-medium text-4xl text-black">Doodle</h1>
+        </span>
 
-      <Menu
-        lineColor={lineColor}
-        setLineColor={setLineColor}
-        lineWidth={lineWidth}
-        setLineWidth={setLineWidth}
-        clearDrawing={clearDrawing}
-        downloadImage={downloadImage}
-        undo={undo}
-      />
+        <Menu
+          lineColor={lineColor}
+          setLineColor={setLineColor}
+          lineWidth={lineWidth}
+          setLineWidth={setLineWidth}
+          clearDrawing={clearDrawing}
+          downloadImage={downloadImage}
+          undo={undo}
+        />
+      </div>
 
       <div className="draw-area bg-white border-gray-200 border-2 relative cursor-cell">
         <canvas

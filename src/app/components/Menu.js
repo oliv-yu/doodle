@@ -11,7 +11,7 @@ const Menu = ({
   undo,
 }) => {
   return (
-    <div className="menu flex border-4 justify-evenly rounded my-3 items-center mx-auto text-zinc-900 font-light text-xs">
+    <div className="menu flex border-4 justify-evenly rounded items-center text-zinc-900 font-light text-xs">
       <div className="flex items-center p-1">
         <label htmlFor="brush-color">Brush Color</label>
         <input
