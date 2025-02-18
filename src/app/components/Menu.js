@@ -12,9 +12,10 @@ const Menu = ({
 }) => {
   return (
     <div className="menu flex border-4 justify-evenly rounded my-3 items-center mx-auto text-zinc-900 font-light text-xs">
-      <div className="p-1">
-        <label>Brush Color</label>
+      <div className="flex items-center p-1">
+        <label htmlFor="brush-color">Brush Color</label>
         <input
+          id="brush-color"
           className="ml-2"
           type="color"
           onChange={(e) => {
@@ -24,10 +25,11 @@ const Menu = ({
         />
       </div>
 
-      <div className="p-1">
-        <label>Brush Width</label>
+      <div className="flex items-center p-1">
+        <label htmlFor="brush-width">Brush Width</label>
         <input
           className="ml-2"
+          id="brush-width"
           type="range"
           min="3"
           max="15"
@@ -38,7 +40,7 @@ const Menu = ({
         />
       </div>
 
-      <div className="flex p-1 justify-center items-center">
+      <div className="p-1">
         <button
           aria-label="Clear Drawing"
           className="py-1 px-3 mr-2"
