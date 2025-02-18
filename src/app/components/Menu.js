@@ -3,6 +3,7 @@ import "../doodle.css";
 
 const Menu = ({
   clearDrawing,
+  downloadImage,
   lineColor,
   lineWidth,
   setLineColor,
@@ -46,8 +47,16 @@ const Menu = ({
           Clear
         </button>
 
-        <button aria-label="Undo" className="py-1 px-3" onClick={undo}>
+        <button aria-label="Undo" className="py-1 px-3 mr-2" onClick={undo}>
           Undo
+        </button>
+
+        <button
+          aria-label="Download"
+          className="py-1 px-3"
+          onClick={downloadImage}
+        >
+          Download
         </button>
       </div>
     </div>

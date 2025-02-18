@@ -180,6 +180,18 @@ function Draw() {
     );
   };
 
+  const downloadImage = () => {
+    const imageURL = canvasRef.current.toDataURL("image/png");
+
+    // Create a temporary link element to trigger download
+    const link = document.createElement("a");
+    link.href = imageURL;
+    link.download = "doodle.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   useEffect(() => {
     sizeCanvas();
   }, []);
@@ -210,6 +222,7 @@ function Draw() {
         lineWidth={lineWidth}
         setLineWidth={setLineWidth}
         clearDrawing={clearDrawing}
+        downloadImage={downloadImage}
         undo={undo}
       />
 
